@@ -65,3 +65,7 @@ export default class UserController{
         }
     }
 }
+
+
+// DB_URL=mongodb://localhost:27017/Social-Media-DB
+// SecretKey="Kw:C9|Mi7GIN*|G!5t}fySk2XvsuLxX3py$N]?RSo&w#U)9@Fgi/H-7aooD}`e@"
