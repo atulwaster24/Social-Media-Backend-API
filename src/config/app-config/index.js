@@ -2,14 +2,16 @@ import express, { Router } from 'express';
 import dotenv from 'dotenv';
 import { userRouter } from '../../features/users/user.routes.js';
 import { postRouter } from '../../features/posts/post.routes.js';
+import cookieParser from 'cookie-parser';
 dotenv.config()
 
 /* Creating a app */
 const app = express();
 
 /* Setting app configs */
-app.set(express.urlencoded({extended: true}));
-app.set(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.use(cookieParser());
 
 
 /* Setting Routers to handle paths */
