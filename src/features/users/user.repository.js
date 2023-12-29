@@ -7,8 +7,11 @@ export default class UserRepository {
   async signUp(userData) {
     try {
       const newUser = new UserModel(userData);
-      const savedUser = await newUser.save();
+      await newUser.save();
+      const savedUser = await newUser.toObject();
+      delete savedUser['password']
       return savedUser;
+      
     } catch (error) {
       console.log(error);
       if (error instanceof mongoose.Error.ValidationError) {
@@ -40,7 +43,7 @@ export default class UserRepository {
 
   async getUser(userId){
     try {
-        const result =  await UserModel.findById(userId);
+        const result =  await UserModel.findById(userId).select('-password');
         if(!result){
             throw new CustomError("No user found with provided Id.", 404);
         }
@@ -53,7 +56,7 @@ export default class UserRepository {
 
   async getAllUsers(){
     try {
-        const result =  await UserModel.find();
+        const result =  await UserModel.find().select('-password');
         if(!result){
             throw new CustomError("No users to show.", 400);
         }
@@ -61,6 +64,23 @@ export default class UserRepository {
     } catch (error) {
         console.log(error);
         throw new CustomError(error.message, error.code);
+    }
+  }
+
+  async updateUser(userId, updateDetails){
+    try {
+      const update = await UserModel.findByIdAndUpdate(userId, updateDetails, {new: true});
+      update.password = await bcrypt.hash(update.password, 12);
+      
+      if(!update){
+        throw new CustomError('No user found.', 404)
+      }
+      const savedUpdate = await update.save();
+      console.log(savedUpdate)
+      return savedUpdate;
+    } catch (error) {
+      console.log(error);
+      throw new CustomError(error.message, error.code)
     }
   }
 }

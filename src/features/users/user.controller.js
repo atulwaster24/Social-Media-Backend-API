@@ -12,7 +12,7 @@ export default class UserController{
         try {
             const {name, email, password, gender} = req.body;
             const user = await this.userRepository.signUp(req.body);
-            return res.status(201).json({"User": user})
+            return res.status(201).json({"User Created": user})
         } catch (error) {
             console.log(error)
             return res.status(error.code).json({"error": error.message});
@@ -64,8 +64,17 @@ export default class UserController{
             return res.status(error.code).json({"error": error.message});
         }
     }
+
+    async updateUser(req, res, next){
+        try {
+            const {name, email, password, gender} = req.body;
+            const userId = req.params.userId;
+            const updatedUser = await this.userRepository.updateUser(userId, {name, email, password, gender});
+
+            return res.status(201).json({'Updated User': updatedUser});
+
+        } catch (error) {
+            return res.status(error.code).json({"error": error.message});
+        }
+    }
 }
-
-
-// DB_URL=mongodb://localhost:27017/Social-Media-DB
-// SecretKey="Kw:C9|Mi7GIN*|G!5t}fySk2XvsuLxX3py$N]?RSo&w#U)9@Fgi/H-7aooD}`e@"
