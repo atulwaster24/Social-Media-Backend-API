@@ -5,7 +5,7 @@ Its a project that I've done in 25-30 hours I guess. So a lot more of features a
 Below is mentioned how you can use and see how the API works:
 
 Instructions: After you fork your own copy, make sure you have MongoDB installed.
-              Create a .env File in the Social Media Backend API repository and save 'DB_URL' and 'SecretKey'(String).
+              Create a .env File in the Social Media Backend API repository and save 'DB_URL=<your-mongoDB-server-url>' and 'SecretKey=<your-secure-secret-key>'.
 
 
 Paths/Routes for this app to work on your localhost.
