@@ -9,6 +9,8 @@ const commentSchema = new mongoose.Schema({
     trim: true,
     minLength: [1, "Content should be atleast 1 character."],
   },
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like", default: [] }],
+  likesCount: { type: Number, default: 0 },
   timestamp: { type: Date, default: Date.now },
 });
 
