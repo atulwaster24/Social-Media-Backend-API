@@ -67,20 +67,39 @@ export default class UserRepository {
     }
   }
 
-  async updateUser(userId, updateDetails){
+  async updateUser(userToUpdate, updateDetails){
     try {
-      const update = await UserModel.findByIdAndUpdate(userId, updateDetails, {new: true});
-      update.password = await bcrypt.hash(update.password, 12);
-      
-      if(!update){
-        throw new CustomError('No user found.', 404)
+      const user = await UserModel.findById(userToUpdate);
+      if(!user){
+        throw new CustomError("No user found.", 404);
       }
-      const savedUpdate = await update.save();
-      console.log(savedUpdate)
-      return savedUpdate;
+      const userPassword = user.password;
+
+
+      let modifiedUpdateDetails = {...updateDetails, password: userPassword};
+      const update = await UserModel.findByIdAndUpdate(userToUpdate, {$set: modifiedUpdateDetails}, {new: true});
+      
+      return update;
     } catch (error) {
       console.log(error);
-      throw new CustomError(error.message, error.code)
+      throw new CustomError(error.message, error.code ? error.code : 500);
     }
   }
+
+  // async sendOTP(email, userId){
+  //   try {
+  //     const userExists = await UserModel.findOne({email});
+  //     if(!userExists){
+  //       return 'No user with provided email found.'
+  //     }
+  //     if(userExists.userId !== userId){
+  //       throw new CustomError(`You are unauthorized to reset password for ${email}.`);
+  //     }
+      
+
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new CustomError(error.message, error.code ? error.code : 500);
+  //   }
+  // }
 }

@@ -9,7 +9,9 @@ const userSchema = mongoose.Schema({
             return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value);
         }, message: "Password should be 8 or more characters and should have a special character."} 
     },
-    gender: {type: String, enum: ['Male', "Female", "Prefer not to say"]}
+    gender: {type: String, enum: ['Male', "Female", "Prefer not to say"]},
+    friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+    pendingFriendRequests : [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]
 });
 
 // Hash the password before saving to the database
